@@ -7,98 +7,125 @@ body {
     text-align: center;
     background-color: #f0f0f0;
     margin: 0;
-    padding: 20px;
+    padding: 1vh 20px; /* Thu hẹp lề để nhường chỗ cho Game */
+    height: 100vh; /* Ép buộc chiều cao bằng 100% màn hình */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* CẤM CUỘN CHUỘT TRÊN PC */
 }
 
 h1 {
     color: #333;
+    margin: 1vh 0;
+    font-size: 26px;
 }
 
+/* BẢNG THÔNG TIN (HUD) */
+.hud-container {
+    display: flex;
+    justify-content: space-between;
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    margin: 0 auto 1vh auto;
+    width: 100%;
+    max-width: 800px;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+#money-display {
+    color: #ffd700; 
+}
+
+#character-name-display {
+    color: #007BFF; 
+    text-transform: capitalize; 
+    margin: 0 0 1.5vh 0;
+    font-size: 20px;
+}
+
+/* KHÔNG GIAN GAME (CHIA 2 CỘT) */
+.game-workspace {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 30px;
+    flex: 1; /* Chiếm toàn bộ không gian còn lại */
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* CỘT TRÁI (2 ẢNH) */
 .image-container {
     display: flex;
     justify-content: center;
     align-items: stretch; 
-    margin-bottom: 30px;
-    gap: 20px;
-    flex-wrap: wrap; 
+    gap: 15px;
+    flex: 2; /* Cho vùng ảnh rộng hơn */
 }
 
 .box {
     background-color: white;
-    padding: 20px;
+    padding: 15px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     width: 100%;
-    max-width: 350px; 
+    max-width: 320px; 
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start; 
 }
 
+.box h2 {
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
 #character-wrapper {
     position: relative;
     width: 100%; 
-    max-width: 300px;
+    max-width: 250px; /* Ép kích thước ảnh để không bị tràn xuống dưới */
     margin: 0 auto;
 }
 
-#body-img {
-    width: 100%;
-    display: block;
-}
+#body-img { width: 100%; display: block; }
+#shirt-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; filter: brightness(1.0) contrast(1.0); }
+#color-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; mix-blend-mode: multiply; pointer-events: none; }
+.box img { width: 100%; height: auto; }
 
-#shirt-img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    filter: brightness(1.0) contrast(1.0);
-}
-
-#color-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    mix-blend-mode: multiply; 
-    pointer-events: none;
-}
-
-.box img {
-    width: 100%; 
-    height: auto;
+/* CỘT PHẢI (ĐIỀU KHIỂN & KẾT QUẢ) */
+.right-panel {
+    flex: 1; /* Cột điều khiển chiếm diện tích vừa đủ */
+    max-width: 380px;
+    display: flex;
+    flex-direction: column;
 }
 
 .controls {
     background-color: white;
     width: 100%;
-    max-width: 400px;
-    margin: 0 auto;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     text-align: left;
 }
 
-.controls div {
-    margin-bottom: 15px;
-}
+.controls h3 { margin-top: 0; margin-bottom: 15px; font-size: 16px; text-align: center; }
+.controls div { margin-bottom: 15px; }
+.controls label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px; }
+.controls input { width: 100%; }
 
-.controls label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-.controls input {
-    width: 100%;
+.action-buttons {
+    margin-top: 15px;
 }
 
 #check-btn, #next-btn {
-    margin-top: 20px;
     padding: 12px 30px;
     font-size: 18px;
     font-weight: bold;
@@ -106,28 +133,35 @@ h1 {
     border-radius: 8px;
     cursor: pointer;
     width: 100%;
-    max-width: 200px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
 }
 
-#check-btn {
-    background-color: #28a745;
-    color: white;
-}
-
-#check-btn:hover {
-    background-color: #218838;
-}
+#check-btn { background-color: #28a745; color: white; }
+#check-btn:hover { background-color: #218838; }
+#next-btn { background-color: #007BFF; color: white; display: none; }
 
 #result-text {
-    margin-top: 20px;
+    margin-top: 15px;
     color: #d32f2f;
+    line-height: 1.4;
+    font-size: 18px;
+}
+
+/* CHỮ KÝ TÁC GIẢ Ở ĐÁY MÀN HÌNH */
+.footer-signature {
+    margin-top: auto;
+    padding-bottom: 10px;
+    font-size: 14px;
+    color: #888;
+    font-weight: bold;
+    font-style: italic;
 }
 
 /* =========================================
    GIAO DIỆN MÀN HÌNH POP-UP (MODAL)
    ========================================= */
 .modal {
-    display: none; /* Ẩn mặc định */
+    display: none; 
     position: fixed;
     z-index: 1000;
     left: 0;
@@ -156,70 +190,34 @@ h1 {
     to { transform: scale(1); opacity: 1; }
 }
 
-.close-btn {
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    font-size: 30px;
-    font-weight: bold;
-    color: #aaa;
-    cursor: pointer;
-}
+.close-btn { position: absolute; top: 10px; right: 20px; font-size: 30px; font-weight: bold; color: #aaa; cursor: pointer; }
+.close-btn:hover { color: #333; }
+#modal-score { font-size: 60px; color: #e53935; margin: 10px 0; }
 
-.close-btn:hover {
-    color: #333;
-}
-
-#modal-score {
-    font-size: 60px;
-    color: #e53935;
-    margin: 10px 0;
-}
-
-/* Giao diện di động */
-@media (max-width: 768px) {
-    body {
-        padding: 10px; 
-    }
-
-    .image-container {
-        flex-direction: column; 
-        gap: 15px;
-    }
-
-    h1 {
-        font-size: 24px; 
-    }
-
-    #character-name-display {
-        font-size: 20px;
-    }
-}
 /* =========================================
-   GIAO DIỆN BẢNG THÔNG TIN TIỀN THƯỞNG (HUD)
+   THUẬT TOÁN BẢO VỆ MÀN HÌNH ĐIỆN THOẠI/TABLET
+   Tự động nhả cuộn chuột nếu màn hình quá nhỏ
    ========================================= */
-.hud-container {
-    display: flex;
-    justify-content: space-between;
-    background-color: #333;
-    color: #fff;
-    padding: 15px 25px;
-    border-radius: 10px;
-    margin: 0 auto 20px auto;
-    max-width: 740px;
-    font-size: 18px;
-    font-weight: bold;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-}
-
-#money-display {
-    color: #ffd700; /* Màu vàng rực rỡ cho tiền */
-}
-
-@media (max-width: 768px) {
-    .hud-container {
-        flex-direction: column;
-        gap: 10px;
-        font-size: 16px;
+@media (max-height: 750px), (max-width: 900px) {
+    body {
+        height: auto; 
+        overflow: auto; /* Trả lại cuộn chuột cho Mobile/Màn lùn */
     }
+    .game-workspace {
+        flex-direction: column;
+        align-items: center;
+    }
+    .image-container {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    .right-panel {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 600px) {
+    .image-container { flex-direction: column; }
+    .hud-container { flex-direction: column; gap: 5px; font-size: 14px; text-align: center; }
 }
