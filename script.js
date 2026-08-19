@@ -20,7 +20,7 @@ const modalComment = document.getElementById('modal-comment');
 
 const levelList = [
     "naruto_236_142_70.png",
-    "Doraemon_0_151_227.png",
+    "doraemon_0_151_227.png",
     "shin_229_38_56.png",
     "piccolo_108_33_118.png",
     "pikachu_255_217_36.png",
