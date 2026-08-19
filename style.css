@@ -195,3 +195,31 @@ h1 {
         font-size: 20px;
     }
 }
+/* =========================================
+   GIAO DIỆN BẢNG THÔNG TIN TIỀN THƯỞNG (HUD)
+   ========================================= */
+.hud-container {
+    display: flex;
+    justify-content: space-between;
+    background-color: #333;
+    color: #fff;
+    padding: 15px 25px;
+    border-radius: 10px;
+    margin: 0 auto 20px auto;
+    max-width: 740px;
+    font-size: 18px;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+#money-display {
+    color: #ffd700; /* Màu vàng rực rỡ cho tiền */
+}
+
+@media (max-width: 768px) {
+    .hud-container {
+        flex-direction: column;
+        gap: 10px;
+        font-size: 16px;
+    }
+}
