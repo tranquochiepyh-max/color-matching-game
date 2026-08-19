@@ -29,7 +29,13 @@ const levelList = [
     "sakura_239_191_191.png",
     "anya forger_245_188_171.png",
     "mitsuri kanroji_188_205_126.png",
-    "joe swanson_189_193_196.png"
+    "joe swanson_189_193_196.png",
+    "deku_29_105_75.png",
+    "nobi nobita_254_223_106.png",
+    "toru kazama_41_189_215.png",
+    "minions_235_205_71.png",
+    "Jerry Mouse_210_144_34.png",
+    "chopper_231_90_106.png"
 ];
 
 let targetR = 0, targetG = 0, targetB = 0;
