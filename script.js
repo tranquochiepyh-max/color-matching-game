@@ -91,8 +91,6 @@ function loadNewLevel() {
     playBag.splice(randomIndex, 1);
     lastPlayed = chosenFileName;
 
-    targetImg.src = "character-original/" + chosenFileName;
-
     let nameWithoutExtension = chosenFileName.split('.')[0]; 
     let parts = nameWithoutExtension.split('_'); 
     
@@ -106,12 +104,16 @@ function loadNewLevel() {
     let displayName = rawCharName.replace(/_/g, ' ');
     charNameDisplay.innerText = "Nhân vật của bạn: " + displayName;
 
-    bodyImg.src = "body/" + charName + "_body.png";
-    shirtImg.src = "shirt/" + charName + "_255_255_255.png";
+    // BƯỚC ĐỘT PHÁ: Gắn mã Cache-buster ép tải file mới nhất
+    let cacheBuster = new Date().getTime();
+
+    targetImg.src = `character-original/${chosenFileName}?v=${cacheBuster}`;
+    bodyImg.src = `body/${charName}_body.png?v=${cacheBuster}`;
+    shirtImg.src = `shirt/${charName}_255_255_255.png?v=${cacheBuster}`;
     
-    colorOverlay.style.webkitMaskImage = `url('shirt/${charName}_255_255_255.png')`;
+    colorOverlay.style.webkitMaskImage = `url('shirt/${charName}_255_255_255.png?v=${cacheBuster}')`;
     colorOverlay.style.webkitMaskSize = "100% 100%";
-    colorOverlay.style.maskImage = `url('shirt/${charName}_255_255_255.png')`;
+    colorOverlay.style.maskImage = `url('shirt/${charName}_255_255_255.png?v=${cacheBuster}')`;
     colorOverlay.style.maskSize = "100% 100%";
 
     resultText.innerHTML = "";
@@ -161,7 +163,6 @@ function calculateScore() {
         finalScore = score > 0 ? Math.round(score) : 0;
     }
 
-    // TÁCH BIỆT LỜI NHẬN XÉT (cho Pop-up) VÀ LỜI KHUYẾN KHÍCH (cho màn hình chính)
     let comment = "";
     let encourageMsg = "";
 
@@ -195,7 +196,6 @@ function calculateScore() {
     modalScore.innerText = finalScore + "%";
     modalComment.innerText = comment;
     
-    // Gắn lời khuyến khích vào màn hình chính dưới chữ Độ giống nhau
     resultText.innerHTML = `Độ giống nhau: <strong style="color: #e53935;">${finalScore}%</strong><br><span style="font-size: 20px; color: #555;">${encourageMsg}</span>`;
 
     resultModal.style.display = "flex";
