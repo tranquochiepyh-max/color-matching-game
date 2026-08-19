@@ -1,0 +1,197 @@
+* {
+    box-sizing: border-box; 
+}
+
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    color: #333;
+}
+
+.image-container {
+    display: flex;
+    justify-content: center;
+    align-items: stretch; 
+    margin-bottom: 30px;
+    gap: 20px;
+    flex-wrap: wrap; 
+}
+
+.box {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 350px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; 
+}
+
+#character-wrapper {
+    position: relative;
+    width: 100%; 
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+#body-img {
+    width: 100%;
+    display: block;
+}
+
+#shirt-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    filter: brightness(1.0) contrast(1.0);
+}
+
+#color-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    mix-blend-mode: multiply; 
+    pointer-events: none;
+}
+
+.box img {
+    width: 100%; 
+    height: auto;
+}
+
+.controls {
+    background-color: white;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    text-align: left;
+}
+
+.controls div {
+    margin-bottom: 15px;
+}
+
+.controls label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.controls input {
+    width: 100%;
+}
+
+#check-btn, #next-btn {
+    margin-top: 20px;
+    padding: 12px 30px;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 200px;
+}
+
+#check-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+#check-btn:hover {
+    background-color: #218838;
+}
+
+#result-text {
+    margin-top: 20px;
+    color: #d32f2f;
+}
+
+/* =========================================
+   GIAO DIỆN MÀN HÌNH POP-UP (MODAL)
+   ========================================= */
+.modal {
+    display: none; /* Ẩn mặc định */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6); 
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 15px;
+    text-align: center;
+    position: relative;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+    animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 30px;
+    font-weight: bold;
+    color: #aaa;
+    cursor: pointer;
+}
+
+.close-btn:hover {
+    color: #333;
+}
+
+#modal-score {
+    font-size: 60px;
+    color: #e53935;
+    margin: 10px 0;
+}
+
+/* Giao diện di động */
+@media (max-width: 768px) {
+    body {
+        padding: 10px; 
+    }
+
+    .image-container {
+        flex-direction: column; 
+        gap: 15px;
+    }
+
+    h1 {
+        font-size: 24px; 
+    }
+
+    #character-name-display {
+        font-size: 20px;
+    }
+}
