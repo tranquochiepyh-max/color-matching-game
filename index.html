@@ -15,27 +15,29 @@
         <div id="streak-display">🔥 Chuỗi: 0 (Very Easy - Yêu cầu: >= 80%)</div>
         <div id="money-display">💰 Tài khoản: 0 Tỷ VNĐ</div>
     </div>
-    
-    <h2 id="character-name-display">Đang tải nhân vật...</h2>
 
     <!-- KHÔNG GIAN LÀM VIỆC CHÍNH (Chia 2 cột trên PC) -->
     <div class="game-workspace">
         
-        <!-- CỘT TRÁI: Khu vực hiển thị ảnh -->
-        <div class="image-container">
-            <!-- Ảnh đáp án -->
-            <div class="box" id="original-box" style="display: none;">
-                <h2>Đáp án chính xác</h2>
-                <img src="" id="target-img" alt="Ảnh gốc">
-            </div>
+        <!-- CỘT TRÁI: Khu vực hiển thị Tên và Ảnh -->
+        <div class="left-panel">
+            <h2 id="character-name-display">Đang tải nhân vật...</h2>
+            
+            <div class="image-container">
+                <!-- Ảnh đáp án -->
+                <div class="box" id="original-box" style="display: none;">
+                    <h2>Đáp án chính xác</h2>
+                    <img src="" id="target-img" alt="Ảnh gốc">
+                </div>
 
-            <!-- Ảnh nhân vật -->
-            <div class="box">
-                <h2>Đáp án của bạn</h2>
-                <div id="character-wrapper">
-                    <img src="" id="body-img" alt="Thân nhân vật">
-                    <img src="" id="shirt-img" alt="Áo nhân vật">
-                    <div id="color-overlay"></div>
+                <!-- Ảnh nhân vật -->
+                <div class="box">
+                    <h2>Đáp án của bạn</h2>
+                    <div id="character-wrapper">
+                        <img src="" id="body-img" alt="Thân nhân vật">
+                        <img src="" id="shirt-img" alt="Áo nhân vật">
+                        <div id="color-overlay"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -86,7 +88,7 @@
         </div>
     </div>
 
-    <div class="footer-signature">Made by Peihcouq</div>
+    <div class="footer-signature">made by peihcouq</div>
 
     <script src="script.js"></script>
 </body>
