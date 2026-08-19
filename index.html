@@ -10,63 +10,71 @@
 
     <h1>Color Matching Game</h1>
 
-    <!-- BẢNG THÔNG TIN (HUD) HIỂN THỊ CHUỖI VÀ TIỀN THƯỞNG -->
+    <!-- BẢNG THÔNG TIN (HUD) -->
     <div class="hud-container">
         <div id="streak-display">🔥 Chuỗi: 0 (Very Easy - Yêu cầu: >= 80%)</div>
         <div id="money-display">💰 Tài khoản: 0 Tỷ VNĐ</div>
     </div>
     
-    <h2 id="character-name-display" style="color: #007BFF; text-transform: capitalize; margin-bottom: 20px;">Đang tải nhân vật...</h2>
+    <h2 id="character-name-display">Đang tải nhân vật...</h2>
 
-    <div class="image-container">
-        <!-- Cột 1: Ảnh gốc (Đáp án) -->
-        <div class="box" id="original-box" style="display: none;">
-            <h2>Đáp án chính xác</h2>
-            <img src="" id="target-img" alt="Ảnh gốc">
-        </div>
+    <!-- KHÔNG GIAN LÀM VIỆC CHÍNH (Chia 2 cột trên PC) -->
+    <div class="game-workspace">
+        
+        <!-- CỘT TRÁI: Khu vực hiển thị ảnh -->
+        <div class="image-container">
+            <!-- Ảnh đáp án -->
+            <div class="box" id="original-box" style="display: none;">
+                <h2>Đáp án chính xác</h2>
+                <img src="" id="target-img" alt="Ảnh gốc">
+            </div>
 
-        <!-- Cột 2: Ảnh nhân vật trong game -->
-        <div class="box">
-            <h2>Đáp án của bạn</h2>
-            <div id="character-wrapper">
-                <img src="" id="body-img" alt="Thân nhân vật">
-                <img src="" id="shirt-img" alt="Áo nhân vật">
-                <div id="color-overlay"></div>
+            <!-- Ảnh nhân vật -->
+            <div class="box">
+                <h2>Đáp án của bạn</h2>
+                <div id="character-wrapper">
+                    <img src="" id="body-img" alt="Thân nhân vật">
+                    <img src="" id="shirt-img" alt="Áo nhân vật">
+                    <div id="color-overlay"></div>
+                </div>
             </div>
         </div>
+
+        <!-- CỘT PHẢI: Bảng điều khiển & Nút bấm & Kết quả -->
+        <div class="right-panel">
+            <div class="controls" id="controls-panel">
+                <h3>Hãy chọn màu chính xác</h3>
+
+                <div>
+                    <label>Chọn Màu Nhanh:</label>
+                    <input type="color" id="quick-color" value="#ffffff">
+                </div>
+
+                <div>
+                    <label>Màu sắc (Hue):</label>
+                    <input type="range" id="hue" min="0" max="360" value="0">
+                </div>
+
+                <div>
+                    <label>Độ rực rỡ (Saturation):</label>
+                    <input type="range" id="saturation" min="0" max="100" value="0">
+                </div>
+
+                <div>
+                    <label>Độ sáng (Brightness):</label>
+                    <input type="range" id="brightness" min="0" max="100" value="100">
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button id="check-btn">Chấm Điểm</button>
+                <button id="next-btn" style="display: none;">Chơi lại</button>
+            </div>
+            
+            <h2 id="result-text"></h2>
+        </div>
+
     </div>
-
-    <!-- Bảng điều khiển -->
-    <div class="controls" id="controls-panel">
-        <h3>Hãy chọn màu chính xác cho nhân vật</h3>
-
-        <div>
-            <label>Chọn Màu Nhanh:</label>
-            <input type="color" id="quick-color" value="#ffffff">
-        </div>
-
-        <div>
-            <label>Màu sắc (Hue):</label>
-            <input type="range" id="hue" min="0" max="360" value="0">
-        </div>
-
-        <div>
-            <label>Độ rực rỡ (Saturation):</label>
-            <input type="range" id="saturation" min="0" max="100" value="0">
-        </div>
-
-        <div>
-            <label>Độ sáng (Brightness):</label>
-            <input type="range" id="brightness" min="0" max="100" value="100">
-        </div>
-    </div>
-
-    <div style="margin-top: 20px;">
-        <button id="check-btn">Chấm Điểm</button>
-        <button id="next-btn" style="display: none; background-color: #007BFF; margin-left: 10px; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Chơi lại</button>
-    </div>
-    
-    <h2 id="result-text" style="line-height: 1.5;"></h2>
 
     <!-- MÀN HÌNH POP-UP KẾT QUẢ -->
     <div id="result-modal" class="modal">
@@ -78,9 +86,7 @@
         </div>
     </div>
 
-    <div style="margin-top: 50px; padding-bottom: 20px; font-size: 16px; color: #888; font-weight: bold; font-style: italic;">
-        Made by Peihcouq
-    </div>
+    <div class="footer-signature">Made by Peihcouq</div>
 
     <script src="script.js"></script>
 </body>
