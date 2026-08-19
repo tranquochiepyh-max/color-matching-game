@@ -9,6 +9,12 @@
 <body>
 
     <h1>Color Matching Game</h1>
+
+    <!-- BẢNG THÔNG TIN (HUD) HIỂN THỊ CHUỖI VÀ TIỀN THƯỞNG -->
+    <div class="hud-container">
+        <div id="streak-display">🔥 Chuỗi: 0 (Very Easy - Yêu cầu: >= 80%)</div>
+        <div id="money-display">💰 Tài khoản: 0 Tỷ VNĐ</div>
+    </div>
     
     <h2 id="character-name-display" style="color: #007BFF; text-transform: capitalize; margin-bottom: 20px;">Đang tải nhân vật...</h2>
 
@@ -30,7 +36,7 @@
         </div>
     </div>
 
-    <!-- Bảng điều khiển (Sẽ bị ẩn sau khi chấm điểm) -->
+    <!-- Bảng điều khiển -->
     <div class="controls" id="controls-panel">
         <h3>Hãy chọn màu chính xác cho nhân vật</h3>
 
@@ -72,9 +78,8 @@
         </div>
     </div>
 
-    <!-- CHỮ KÝ TÁC GIẢ -->
     <div style="margin-top: 50px; padding-bottom: 20px; font-size: 16px; color: #888; font-weight: bold; font-style: italic;">
-        Made by Peihcouq
+        made by peihcouq
     </div>
 
     <script src="script.js"></script>
