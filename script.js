@@ -24,7 +24,7 @@ const levelList = [
     "shin_229_38_56.png",
     "piccolo_108_33_118.png",
     "pikachu_255_217_36.png",
-    "Hattori Heji_225_157_104.png",
+    "hattori heji_225_157_104.png",
     "hulk_139_175_66.png",
     "sakura_239_191_191.png",
     "anya forger_245_188_171.png",
@@ -34,7 +34,7 @@ const levelList = [
     "nobi nobita_254_223_106.png",
     "toru kazama_41_189_215.png",
     "minions_235_205_71.png",
-    "Jerry Mouse_210_144_34.png",
+    "jerry mouse_210_144_34.png",
     "chopper_231_90_106.png"
 ];
 
