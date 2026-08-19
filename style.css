@@ -61,14 +61,14 @@ h1 {
     flex: 2;
     display: flex;
     flex-direction: column;
-    align-items: center; /* Gom tên nhân vật và ảnh ra chính giữa cột trái */
+    align-items: center; 
     width: 100%;
 }
 
 #character-name-display {
     color: #3498db; 
     text-transform: capitalize; 
-    margin: 0 0 15px 0; /* Cách ảnh phía dưới một khoảng đẹp mắt */
+    margin: 0 0 15px 0; 
     font-size: 22px;
 }
 
@@ -216,21 +216,6 @@ h1 {
 #modal-score { font-size: 60px; color: #e53935; margin: 10px 0; }
 
 /* =========================================
-   THUẬT TOÁN BẢO VỆ MÀN HÌNH ĐIỆN THOẠI/TABLET
-   ========================================= */
-@media (max-height: 750px), (max-width: 900px) {
-    body { height: auto; overflow: auto; padding: 20px; }
-    .game-workspace { flex-direction: column; align-items: center; gap: 20px;}
-    .left-panel { width: 100%; }
-    .image-container { flex-direction: row; flex-wrap: wrap; }
-    .right-panel { width: 100%; max-width: 100%; min-height: auto; }
-}
-
-@media (max-width: 600px) {
-    .image-container { flex-direction: column; }
-    .hud-container { flex-direction: column; gap: 5px; font-size: 14px; text-align: center; }
-}
-/* =========================================
    GIAO DIỆN CỔNG ĐĂNG NHẬP
    ========================================= */
 .auth-input {
@@ -270,8 +255,23 @@ h1 {
     transform: translateY(0);
 }
 
-/* Đảm bảo game-wrapper giãn đều màn hình */
 #game-wrapper {
     display: flex;
     flex-direction: column;
+}
+
+/* =========================================
+   THUẬT TOÁN BẢO VỆ MÀN HÌNH ĐIỆN THOẠI/TABLET
+   ========================================= */
+@media (max-height: 750px), (max-width: 900px) {
+    body { height: auto; overflow: auto; padding: 20px; }
+    .game-workspace { flex-direction: column; align-items: center; gap: 20px;}
+    .left-panel { width: 100%; }
+    .image-container { flex-direction: row; flex-wrap: wrap; }
+    .right-panel { width: 100%; max-width: 100%; min-height: auto; }
+}
+
+@media (max-width: 600px) {
+    .image-container { flex-direction: column; }
+    .hud-container { flex-direction: column; gap: 5px; font-size: 14px; text-align: center; }
 }

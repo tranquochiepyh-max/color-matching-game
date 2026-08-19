@@ -4,14 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Color Matching Game</title>
+    
+    <!-- Lệnh ép trình duyệt không lưu Cache -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
-    <link rel="stylesheet" href="style.css?v=1.1">
+
+    <link rel="stylesheet" href="style.css?v=2.0">
 </head>
 <body>
 
-    <!-- MÀN HÌNH ĐĂNG NHẬP / ĐĂNG KÝ (Hiển thị đầu tiên) -->
+    <!-- MÀN HÌNH ĐĂNG NHẬP / ĐĂNG KÝ -->
     <div id="auth-modal" class="modal" style="display: flex;">
         <div class="modal-content">
             <h2 style="color: #2c3e50; margin-bottom: 5px;">Color Matching</h2>
@@ -31,7 +34,7 @@
         </div>
     </div>
 
-    <!-- TOÀN BỘ GAME (Bị ẩn cho đến khi đăng nhập) -->
+    <!-- KHÔNG GIAN GAME CHÍNH -->
     <div id="game-wrapper" style="display: none; width: 100%; height: 100%; flex-direction: column;">
         
         <h1>Color Matching Game</h1>
@@ -49,14 +52,16 @@
         </div>
 
         <div class="game-workspace">
-            <!-- CỘT TRÁI -->
+            <!-- CỘT TRÁI: Tên nhân vật & 2 Ảnh -->
             <div class="left-panel">
                 <h2 id="character-name-display">Đang tải nhân vật...</h2>
                 <div class="image-container">
+                    <!-- Ảnh đáp án -->
                     <div class="box" id="original-box" style="display: none;">
                         <h2>Đáp án chính xác</h2>
                         <img src="" id="target-img" alt="Ảnh gốc">
                     </div>
+                    <!-- Ảnh nhân vật chơi -->
                     <div class="box">
                         <h2>Đáp án của bạn</h2>
                         <div id="character-wrapper">
@@ -68,11 +73,20 @@
                 </div>
             </div>
 
-            <!-- CỘT PHẢI -->
+            <!-- CỘT PHẢI: Bảng điều khiển màu & Kết quả -->
             <div class="right-panel">
                 <div class="controls" id="controls-panel">
                     <h3>Hãy chọn màu chính xác</h3>
-                    <div><label>Chọn Màu Nhanh:</label><input type="color" id="quick-color" value="#ffffff"></div>
+                    
+                    <!-- Vòng Tròn Màu Canvas -->
+                    <div>
+                        <label>Vòng Tròn Màu (Kéo/Chạm để chọn):</label>
+                        <div style="display: flex; justify-content: center; margin: 15px 0;">
+                            <canvas id="color-wheel-canvas" width="200" height="200" style="border-radius: 50%; cursor: crosshair; box-shadow: 0 4px 10px rgba(0,0,0,0.15);"></canvas>
+                        </div>
+                        <input type="color" id="quick-color" value="#ffffff" style="display: none;">
+                    </div>
+
                     <div><label>Màu sắc (Hue):</label><input type="range" id="hue" min="0" max="360" value="0"></div>
                     <div><label>Độ rực rỡ (Saturation):</label><input type="range" id="saturation" min="0" max="100" value="0"></div>
                     <div><label>Độ sáng (Brightness):</label><input type="range" id="brightness" min="0" max="100" value="100"></div>
@@ -86,7 +100,7 @@
             </div>
         </div>
 
-        <!-- MÀN HÌNH KẾT QUẢ -->
+        <!-- MÀN HÌNH POP-UP KẾT QUẢ -->
         <div id="result-modal" class="modal">
             <div class="modal-content">
                 <span class="close-btn" id="close-modal">&times;</span>
@@ -99,6 +113,6 @@
         <div class="footer-signature">made by peihcouq</div>
     </div>
 
-    <script src="script.js?v=1.1"></script>
+    <script src="script.js?v=2.0"></script>
 </body>
 </html>

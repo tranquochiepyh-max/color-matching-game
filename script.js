@@ -1,11 +1,10 @@
 // ==========================================
 // HỆ THỐNG DATABASE ẢO (LOCAL STORAGE)
 // ==========================================
-let currentUser = null; // Tên user đang đăng nhập (null = chưa đăng nhập, 'guest' = khách)
+let currentUser = null; 
 let currentStreak = 0;
 let virtualMoney = 0;
 
-// Các phần tử UI của Auth
 const authModal = document.getElementById('auth-modal');
 const gameWrapper = document.getElementById('game-wrapper');
 const usernameInput = document.getElementById('username-input');
@@ -13,45 +12,30 @@ const passwordInput = document.getElementById('password-input');
 const authError = document.getElementById('auth-error');
 const playerNameDisplay = document.getElementById('player-name-display');
 
-// ĐĂNG KÝ TÀI KHOẢN MỚI
 document.getElementById('register-btn').addEventListener('click', () => {
     let user = usernameInput.value.trim().toLowerCase();
     let pass = passwordInput.value.trim();
-    
-    if (!user || !pass) {
-        authError.innerText = "Vui lòng nhập tài khoản và mật khẩu!";
-        return;
-    }
+    if (!user || !pass) { authError.innerText = "Vui lòng nhập tài khoản và mật khẩu!"; return; }
     
     let db = JSON.parse(localStorage.getItem('gameUsersDB')) || {};
-    
     if (db[user]) {
         authError.innerText = "Tên tài khoản này đã có người sử dụng!";
     } else {
-        // Tạo hồ sơ mới
         db[user] = { password: pass, streak: 0, money: 0 };
         localStorage.setItem('gameUsersDB', JSON.stringify(db));
         authError.style.color = "#2ecc71";
         authError.innerText = "Đăng ký thành công! Đang vào game...";
-        
         setTimeout(() => loginSuccess(user, 0, 0), 1000);
     }
 });
 
-// ĐĂNG NHẬP
 document.getElementById('login-btn').addEventListener('click', () => {
     let user = usernameInput.value.trim().toLowerCase();
     let pass = passwordInput.value.trim();
-    
-    if (!user || !pass) {
-        authError.innerText = "Vui lòng nhập tài khoản và mật khẩu!";
-        return;
-    }
+    if (!user || !pass) { authError.innerText = "Vui lòng nhập tài khoản và mật khẩu!"; return; }
     
     let db = JSON.parse(localStorage.getItem('gameUsersDB')) || {};
-    
     if (db[user] && db[user].password === pass) {
-        // Đúng mật khẩu -> Tải dữ liệu
         loginSuccess(user, db[user].streak, db[user].money);
     } else {
         authError.style.color = "#e74c3c";
@@ -59,56 +43,37 @@ document.getElementById('login-btn').addEventListener('click', () => {
     }
 });
 
-// CHƠI KHÁCH
-document.getElementById('guest-btn').addEventListener('click', () => {
-    loginSuccess('guest', 0, 0);
-});
+document.getElementById('guest-btn').addEventListener('click', () => { loginSuccess('guest', 0, 0); });
 
-// ĐĂNG XUẤT
 document.getElementById('logout-btn').addEventListener('click', () => {
-    currentUser = null;
-    currentStreak = 0;
-    virtualMoney = 0;
-    usernameInput.value = "";
-    passwordInput.value = "";
-    authError.innerText = "";
-    gameWrapper.style.display = "none";
-    authModal.style.display = "flex";
+    currentUser = null; currentStreak = 0; virtualMoney = 0;
+    usernameInput.value = ""; passwordInput.value = ""; authError.innerText = "";
+    gameWrapper.style.display = "none"; authModal.style.display = "flex";
 });
 
 function loginSuccess(username, streak, money) {
-    currentUser = username;
-    currentStreak = streak;
-    virtualMoney = money;
-    
-    authModal.style.display = "none";
-    gameWrapper.style.display = "flex";
-    
+    currentUser = username; currentStreak = streak; virtualMoney = money;
+    authModal.style.display = "none"; gameWrapper.style.display = "flex";
     if (currentUser === 'guest') {
         playerNameDisplay.innerText = "Chế độ: Khách (Không lưu tiến trình)";
     } else {
         playerNameDisplay.innerText = "Xin chào, " + currentUser;
     }
-    
-    loadNewLevel(); // Tải game sau khi đăng nhập xong
+    loadNewLevel(); 
 }
 
-// LƯU TIẾN TRÌNH VÀO BỘ NHỚ (Chỉ lưu nếu không phải Guest)
 function saveProgress() {
     if (currentUser && currentUser !== 'guest') {
         let db = JSON.parse(localStorage.getItem('gameUsersDB')) || {};
-        // Đảm bảo user tồn tại trước khi cập nhật
         if(db[currentUser]) {
-            db[currentUser].streak = currentStreak;
-            db[currentUser].money = virtualMoney;
+            db[currentUser].streak = currentStreak; db[currentUser].money = virtualMoney;
             localStorage.setItem('gameUsersDB', JSON.stringify(db));
         }
     }
 }
 
-
 // ==========================================
-// HỆ THỐNG GAME LÕI (Không đổi)
+// HỆ THỐNG GAME LÕI
 // ==========================================
 const shirtImg = document.getElementById('shirt-img');
 const bodyImg = document.getElementById('body-img'); 
@@ -219,9 +184,14 @@ function loadNewLevel() {
 
     hueSlider.value = Math.floor(Math.random() * 360);
     saturationSlider.value = 70; brightnessSlider.value = 50;
+
     let rgb = hslToRgb(hueSlider.value, saturationSlider.value, brightnessSlider.value);
     quickColor.value = rgbToHex(rgb[0], rgb[1], rgb[2]);
     changeShirtColor();
+    
+    // Tự động vẽ và đồng bộ chấm tròn mỗi khi qua màn mới
+    drawColorWheelNative();
+    updateCursorFromSliders();
 }
 
 function changeShirtColor() {
@@ -253,9 +223,7 @@ function calculateScore() {
         currentStreak = 0;
     }
 
-    updateHUD();
-    saveProgress(); // BƯỚC ĐỘT PHÁ: Lệnh tự động sao lưu dữ liệu vào trình duyệt ngay lập tức
-
+    updateHUD(); saveProgress(); 
     originalBox.style.display = "flex"; controlsPanel.style.display = "none"; 
     checkBtn.style.display = "none"; nextBtn.style.display = "inline-block";
     
@@ -267,18 +235,175 @@ function calculateScore() {
 closeModalBtn.onclick = function() { resultModal.style.display = "none"; }
 window.onclick = function(event) { if (event.target == resultModal) resultModal.style.display = "none"; }
 
+// ==========================================
+// ĐỒNG BỘ 2 CHIỀU: SLIDER <-> CHẤM TRÒN
+// ==========================================
 function syncColorPickerToSliders() {
     let hex = quickColor.value; let r = parseInt(hex.substr(1, 2), 16); let g = parseInt(hex.substr(3, 2), 16); let b = parseInt(hex.substr(5, 2), 16);
     let values = rgbToHsl(r, g, b); hueSlider.value = values[0]; saturationSlider.value = values[1]; brightnessSlider.value = values[2];
     changeShirtColor();
+    updateCursorFromSliders();
+    drawColorWheelNative();
 }
 
-hueSlider.addEventListener('input', () => { let rgb = hslToRgb(hueSlider.value, saturationSlider.value, brightnessSlider.value); quickColor.value = rgbToHex(rgb[0], rgb[1], rgb[2]); changeShirtColor(); });
-saturationSlider.addEventListener('input', () => { let rgb = hslToRgb(hueSlider.value, saturationSlider.value, brightnessSlider.value); quickColor.value = rgbToHex(rgb[0], rgb[1], rgb[2]); changeShirtColor(); });
-brightnessSlider.addEventListener('input', () => { let rgb = hslToRgb(hueSlider.value, saturationSlider.value, brightnessSlider.value); quickColor.value = rgbToHex(rgb[0], rgb[1], rgb[2]); changeShirtColor(); });
+hueSlider.addEventListener('input', () => { 
+    let rgb = hslToRgb(hueSlider.value, saturationSlider.value, brightnessSlider.value); 
+    quickColor.value = rgbToHex(rgb[0], rgb[1], rgb[2]); 
+    changeShirtColor(); 
+    updateCursorFromSliders(); 
+});
+
+saturationSlider.addEventListener('input', () => { 
+    let rgb = hslToRgb(hueSlider.value, saturationSlider.value, brightnessSlider.value); 
+    quickColor.value = rgbToHex(rgb[0], rgb[1], rgb[2]); 
+    changeShirtColor(); 
+    updateCursorFromSliders(); 
+});
+
+brightnessSlider.addEventListener('input', () => { 
+    let rgb = hslToRgb(hueSlider.value, saturationSlider.value, brightnessSlider.value); 
+    quickColor.value = rgbToHex(rgb[0], rgb[1], rgb[2]); 
+    changeShirtColor(); 
+    updateCursorFromSliders(); 
+    drawColorWheelNative();    
+});
 quickColor.addEventListener('input', syncColorPickerToSliders);
 
 checkBtn.addEventListener('click', calculateScore);
 nextBtn.addEventListener('click', loadNewLevel);
 
-// Xóa lệnh loadNewLevel() mặc định ở cuối file để chờ người chơi Đăng nhập trước
+// ==========================================
+// VÒNG TRÒN CHỌN MÀU (CONIC GRADIENT & TOÁN HỌC)
+// ==========================================
+const colorCanvas = document.getElementById('color-wheel-canvas');
+const ctx = colorCanvas.getContext('2d');
+
+// Tạo khung chứa canvas
+const wrapper = document.createElement('div');
+wrapper.style.position = 'relative';
+wrapper.style.width = '200px';
+wrapper.style.height = '200px';
+colorCanvas.parentNode.insertBefore(wrapper, colorCanvas);
+wrapper.appendChild(colorCanvas);
+
+// Tạo chấm định vị
+const colorCursor = document.createElement('div');
+colorCursor.style.position = 'absolute';
+colorCursor.style.width = '18px';
+colorCursor.style.height = '18px';
+colorCursor.style.border = '3px solid white';
+colorCursor.style.borderRadius = '50%';
+colorCursor.style.transform = 'translate(-50%, -50%)'; 
+colorCursor.style.pointerEvents = 'none'; 
+colorCursor.style.boxShadow = '0 2px 5px rgba(0,0,0,0.5), inset 0 1px 3px rgba(0,0,0,0.5)';
+colorCursor.style.display = 'block'; 
+wrapper.appendChild(colorCursor);
+
+// Vẽ vòng tròn màu mượt mà bằng Công nghệ Gradient Vector
+function drawColorWheelNative() {
+    const l = brightnessSlider.value || 50; 
+    const centerX = 100;
+    const centerY = 100;
+    const radius = 100;
+
+    ctx.clearRect(0, 0, 200, 200);
+
+    // BƯỚC 1: Phủ lớp HUE siêu mượt
+    const conicGradient = ctx.createConicGradient(0, centerX, centerY);
+    for (let i = 0; i <= 360; i += 5) {
+        conicGradient.addColorStop(i / 360, `hsl(${i}, 100%, ${l}%)`);
+    }
+    
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+    ctx.fillStyle = conicGradient;
+    ctx.fill();
+
+    // BƯỚC 2: Phủ lớp SATURATION (Độ rực rỡ từ tâm ra rìa)
+    const radialGradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius);
+    radialGradient.addColorStop(0, `hsla(0, 0%, ${l}%, 1)`); 
+    radialGradient.addColorStop(1, `hsla(0, 0%, ${l}%, 0)`); 
+    
+    ctx.fillStyle = radialGradient;
+    ctx.fill();
+}
+
+// Di chuyển chấm định vị theo tọa độ của Thanh Trượt
+function updateCursorFromSliders() {
+    const h = parseInt(hueSlider.value);
+    const s = parseInt(saturationSlider.value);
+    const l = parseInt(brightnessSlider.value);
+    
+    const distance = s; 
+    const angleRad = h * Math.PI / 180;
+    
+    const x = 100 + distance * Math.cos(angleRad);
+    const y = 100 + distance * Math.sin(angleRad);
+    
+    colorCursor.style.left = x + 'px';
+    colorCursor.style.top = y + 'px';
+    colorCursor.style.backgroundColor = `hsl(${h}, ${s}%, ${l}%)`;
+}
+
+let isDraggingColor = false;
+
+// Hút màu từ Vòng tròn và cập nhật Thanh Trượt
+function pickColorFromCanvas(e) {
+    let clientX, clientY;
+    
+    if (e.touches && e.touches.length > 0) {
+        clientX = e.touches[0].clientX;
+        clientY = e.touches[0].clientY;
+    } else {
+        clientX = e.clientX;
+        clientY = e.clientY;
+    }
+
+    const rect = colorCanvas.getBoundingClientRect();
+    const scaleX = colorCanvas.width / rect.width;
+    const scaleY = colorCanvas.height / rect.height;
+    
+    const x = (clientX - rect.left) * scaleX;
+    const y = (clientY - rect.top) * scaleY;
+
+    const dx = x - 100;
+    const dy = y - 100;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    
+    if (distance > 100) return; 
+
+    // Dùng Toán học suy ngược tọa độ ra Hue và Saturation
+    let angle = Math.atan2(dy, dx) * 180 / Math.PI;
+    if (angle < 0) angle += 360;
+    
+    const h = Math.round(angle);
+    const s = Math.round(distance); 
+    const l = parseInt(brightnessSlider.value); 
+
+    hueSlider.value = h;
+    saturationSlider.value = s;
+    
+    let rgb = hslToRgb(h, s, l);
+    quickColor.value = rgbToHex(rgb[0], rgb[1], rgb[2]);
+    
+    changeShirtColor();
+    updateCursorFromSliders(); 
+}
+
+colorCanvas.addEventListener('mousedown', (e) => { isDraggingColor = true; pickColorFromCanvas(e); });
+window.addEventListener('mouseup', () => { isDraggingColor = false; });
+colorCanvas.addEventListener('mousemove', (e) => { if (isDraggingColor) pickColorFromCanvas(e); });
+
+colorCanvas.addEventListener('touchstart', (e) => { 
+    isDraggingColor = true; 
+    pickColorFromCanvas(e); 
+}, {passive: false});
+
+colorCanvas.addEventListener('touchmove', (e) => { 
+    if (isDraggingColor) {
+        e.preventDefault();
+        pickColorFromCanvas(e);
+    }
+}, {passive: false});
+
+colorCanvas.addEventListener('touchend', () => { isDraggingColor = false; });
