@@ -30,6 +30,26 @@ let targetR = 0, targetG = 0, targetB = 0;
 let playBag = [];
 let lastPlayed = ""; 
 
+// BIẾN LƯU TRỮ CHUỖI VÀ TIỀN THƯỞNG
+let currentStreak = 0;
+let virtualMoney = 0;
+
+// HÀM XÁC ĐỊNH ĐỘ KHÓ DỰA VÀO CHUỖI HIỆN TẠI
+function getDifficultyConfig() {
+    if (currentStreak <= 4) return { level: "Very Easy", req: 80 };
+    if (currentStreak <= 9) return { level: "Easy", req: 85 };
+    if (currentStreak <= 14) return { level: "Normal", req: 90 };
+    if (currentStreak <= 19) return { level: "Hard", req: 95 };
+    return { level: "Impossible", req: 99 };
+}
+
+// HÀM CẬP NHẬT GIAO DIỆN BẢNG THÔNG TIN
+function updateHUD() {
+    let diff = getDifficultyConfig();
+    document.getElementById('streak-display').innerText = `🔥 Chuỗi: ${currentStreak} (${diff.level} - Yêu cầu: >= ${diff.req}%)`;
+    document.getElementById('money-display').innerText = `💰 Tài khoản: ${virtualMoney} Tỷ VNĐ`;
+}
+
 function rgbToHsl(r, g, b) {
     r /= 255; g /= 255; b /= 255;
     let max = Math.max(r, g, b), min = Math.min(r, g, b);
@@ -76,6 +96,9 @@ function rgbToHex(r, g, b) {
 }
 
 function loadNewLevel() {
+    // Luôn cập nhật HUD mỗi khi sang màn mới
+    updateHUD();
+
     if (playBag.length === 0) {
         playBag = [...levelList]; 
     }
@@ -104,7 +127,6 @@ function loadNewLevel() {
     let displayName = rawCharName.replace(/_/g, ' ');
     charNameDisplay.innerText = "Nhân vật của bạn: " + displayName;
 
-    // BƯỚC ĐỘT PHÁ: Gắn mã Cache-buster ép tải file mới nhất
     let cacheBuster = new Date().getTime();
 
     targetImg.src = `character-original/${chosenFileName}?v=${cacheBuster}`;
@@ -163,30 +185,35 @@ function calculateScore() {
         finalScore = score > 0 ? Math.round(score) : 0;
     }
 
+    // KIỂM TRA ĐIỀU KIỆN CHUỖI VÀ TIỀN THƯỞNG
+    let diffConfig = getDifficultyConfig();
+    let isPass = finalScore >= diffConfig.req;
+
     let comment = "";
     let encourageMsg = "";
 
-    if (finalScore === 100) {
-        comment = "Tuyệt đỉnh! Bạn là một thiên tài pha màu!";
-        encourageMsg = "Quá xuất sắc! Hãy tiếp tục thể hiện tài năng ở nhân vật tiếp theo nào!";
+    if (isPass) {
+        // Nếu đạt yêu cầu: Tăng chuỗi và cộng tiền
+        currentStreak++;
+        virtualMoney++;
+        
+        if (finalScore === 100) {
+            comment = `Tuyệt đỉnh! Hoàn hảo 100%! Bạn vượt qua mốc ${diffConfig.req}% một cách dễ dàng.`;
+        } else {
+            comment = `Thành công! Bạn đạt ${finalScore}%, đủ để vượt qua yêu cầu ${diffConfig.req}% của cấp độ ${diffConfig.level}.`;
+        }
+        encourageMsg = `🔥 Chúc mừng! Chuỗi của bạn tăng lên ${currentStreak}. Tài khoản +1 Tỷ VNĐ. Tiếp tục nào!`;
         modalScore.style.color = "#28a745"; 
-    } else if (finalScore >= 90) {
-        comment = "Xuất sắc! Độ chính xác gần như tuyệt đối, khó mà nhận ra sự khác biệt.";
-        encourageMsg = "Chỉ một chút xíu nữa thôi là hoàn hảo! Tiếp tục chinh phục màn sau nhé!";
-        modalScore.style.color = "#ff9800"; 
-    } else if (finalScore >= 70) {
-        comment = "Khá tốt! Bạn đã bám rất sát tông màu gốc của nhân vật.";
-        encourageMsg = "Bạn có con mắt thẩm mỹ rất tốt! Cùng xem nhân vật tiếp theo là ai nhé!";
-        modalScore.style.color = "#007BFF"; 
-    } else if (finalScore >= 50) {
-        comment = "Tạm ổn! Nhưng sắc độ vẫn còn hơi lệch một chút so với đáp án.";
-        encourageMsg = "Đừng bỏ cuộc! Chơi tiếp để rèn luyện kỹ năng pha màu của bạn nào!";
-        modalScore.style.color = "#e53935"; 
     } else {
-        comment = "Ôi không! Màu này đi hơi xa rồi, bạn có thể làm tốt hơn mà!";
-        encourageMsg = "Thất bại là mẹ thành công! Thử lại một ván nữa để lấy lại phong độ nhé!";
+        // Nếu thất bại: Reset chuỗi về 0 (Tiền vẫn giữ nguyên)
+        comment = `Rất tiếc! Cấp độ ${diffConfig.level} yêu cầu tối thiểu ${diffConfig.req}%, nhưng bạn chỉ đạt ${finalScore}%.`;
+        encourageMsg = `💔 Chuỗi đã bị vỡ và quay về 0! Thất bại là mẹ thành công, hãy gỡ gạc lại ở ván sau!`;
         modalScore.style.color = "#e53935"; 
+        currentStreak = 0;
     }
+
+    // Cập nhật lại Bảng Thông Tin (HUD) ngay lập tức
+    updateHUD();
 
     originalBox.style.display = "flex"; 
     controlsPanel.style.display = "none"; 
@@ -196,7 +223,7 @@ function calculateScore() {
     modalScore.innerText = finalScore + "%";
     modalComment.innerText = comment;
     
-    resultText.innerHTML = `Độ giống nhau: <strong style="color: #e53935;">${finalScore}%</strong><br><span style="font-size: 20px; color: #555;">${encourageMsg}</span>`;
+    resultText.innerHTML = `Độ giống nhau: <strong style="color: ${isPass ? '#28a745' : '#e53935'};">${finalScore}%</strong><br><span style="font-size: 20px; color: #555;">${encourageMsg}</span>`;
 
     resultModal.style.display = "flex";
 }
