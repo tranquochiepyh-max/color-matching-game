@@ -23,7 +23,13 @@ const levelList = [
     "Doraemon_0_151_227.png",
     "shin_229_38_56.png",
     "piccolo_108_33_118.png",
-    "pikachu_255_217_36.png"
+    "pikachu_255_217_36.png",
+    "Hattori Heji_225_157_104.png",
+    "hulk_139_175_66.png",
+    "sakura_239_191_191.png",
+    "anya forger_245_188_171.png",
+    "mitsuri kanroji_188_205_126.png",
+    "joe swanson_189_193_196.png"
 ];
 
 let targetR = 0, targetG = 0, targetB = 0;
