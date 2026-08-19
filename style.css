@@ -230,3 +230,48 @@ h1 {
     .image-container { flex-direction: column; }
     .hud-container { flex-direction: column; gap: 5px; font-size: 14px; text-align: center; }
 }
+/* =========================================
+   GIAO DIỆN CỔNG ĐĂNG NHẬP
+   ========================================= */
+.auth-input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 2px solid #ecf0f1;
+    border-radius: 8px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.auth-input:focus {
+    border-color: #3498db;
+}
+
+.auth-btn {
+    width: 100%;
+    padding: 12px;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 10px;
+    transition: transform 0.1s, filter 0.2s;
+}
+
+.auth-btn:hover {
+    filter: brightness(1.1);
+    transform: translateY(-2px);
+}
+
+.auth-btn:active {
+    transform: translateY(0);
+}
+
+/* Đảm bảo game-wrapper giãn đều màn hình */
+#game-wrapper {
+    display: flex;
+    flex-direction: column;
+}

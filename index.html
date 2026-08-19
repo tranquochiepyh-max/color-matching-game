@@ -4,100 +4,101 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Color Matching Game</title>
-    
-    <!-- BƯỚC ĐỘT PHÁ 1: LỆNH ÉP TRÌNH DUYỆT KHÔNG ĐƯỢC LƯU CACHE (LƯU NHÁP) -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
-
-    <!-- BƯỚC ĐỘT PHÁ 2: GẮN MÃ PHIÊN BẢN VÀO FILE CSS -->
-    <link rel="stylesheet" href="style.css?v=1.0">
+    <link rel="stylesheet" href="style.css?v=1.1">
 </head>
 <body>
 
-    <h1>Color Matching Game</h1>
-
-    <!-- BẢNG THÔNG TIN (HUD) -->
-    <div class="hud-container">
-        <div id="streak-display">🔥 Chuỗi: 0 (Very Easy - Yêu cầu: >= 80%)</div>
-        <div id="money-display">💰 Tài khoản: 0 Tỷ VNĐ</div>
+    <!-- MÀN HÌNH ĐĂNG NHẬP / ĐĂNG KÝ (Hiển thị đầu tiên) -->
+    <div id="auth-modal" class="modal" style="display: flex;">
+        <div class="modal-content">
+            <h2 style="color: #2c3e50; margin-bottom: 5px;">Color Matching</h2>
+            <p style="color: #7f8c8d; margin-bottom: 20px; font-size: 14px;">Đăng nhập để lưu lại tiến trình tỷ phú của bạn!</p>
+            
+            <input type="text" id="username-input" class="auth-input" placeholder="Tên tài khoản (viết liền không dấu)">
+            <input type="password" id="password-input" class="auth-input" placeholder="Mật khẩu">
+            
+            <div id="auth-error" style="color: #e74c3c; font-size: 14px; margin-bottom: 15px; min-height: 20px;"></div>
+            
+            <button id="login-btn" class="auth-btn" style="background-color: #3498db;">Đăng Nhập</button>
+            <button id="register-btn" class="auth-btn" style="background-color: #2ecc71;">Đăng Ký Mới</button>
+            
+            <div style="margin: 20px 0; border-bottom: 1px solid #ddd;"></div>
+            
+            <button id="guest-btn" class="auth-btn" style="background-color: #95a5a6;">Chơi Nhanh (Khách)</button>
+        </div>
     </div>
 
-    <!-- KHÔNG GIAN LÀM VIỆC CHÍNH (Chia 2 cột trên PC) -->
-    <div class="game-workspace">
+    <!-- TOÀN BỘ GAME (Bị ẩn cho đến khi đăng nhập) -->
+    <div id="game-wrapper" style="display: none; width: 100%; height: 100%; flex-direction: column;">
         
-        <!-- CỘT TRÁI: Khu vực hiển thị Tên và Ảnh -->
-        <div class="left-panel">
-            <h2 id="character-name-display">Đang tải nhân vật...</h2>
-            
-            <div class="image-container">
-                <!-- Ảnh đáp án -->
-                <div class="box" id="original-box" style="display: none;">
-                    <h2>Đáp án chính xác</h2>
-                    <img src="" id="target-img" alt="Ảnh gốc">
-                </div>
+        <h1>Color Matching Game</h1>
 
-                <!-- Ảnh nhân vật -->
-                <div class="box">
-                    <h2>Đáp án của bạn</h2>
-                    <div id="character-wrapper">
-                        <img src="" id="body-img" alt="Thân nhân vật">
-                        <img src="" id="shirt-img" alt="Áo nhân vật">
-                        <div id="color-overlay"></div>
+        <!-- BẢNG THÔNG TIN (HUD) -->
+        <div class="hud-container">
+            <div style="display: flex; flex-direction: column; text-align: left; gap: 5px;">
+                <div id="streak-display">🔥 Chuỗi: 0 (Very Easy)</div>
+                <div id="money-display">💰 Tài khoản: 0 Tỷ VNĐ</div>
+            </div>
+            <div style="display: flex; flex-direction: column; text-align: right; justify-content: center;">
+                <span id="player-name-display" style="color: #3498db; font-size: 14px; margin-bottom: 5px;">Xin chào, Khách</span>
+                <button id="logout-btn" style="background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold;">Đăng Xuất</button>
+            </div>
+        </div>
+
+        <div class="game-workspace">
+            <!-- CỘT TRÁI -->
+            <div class="left-panel">
+                <h2 id="character-name-display">Đang tải nhân vật...</h2>
+                <div class="image-container">
+                    <div class="box" id="original-box" style="display: none;">
+                        <h2>Đáp án chính xác</h2>
+                        <img src="" id="target-img" alt="Ảnh gốc">
+                    </div>
+                    <div class="box">
+                        <h2>Đáp án của bạn</h2>
+                        <div id="character-wrapper">
+                            <img src="" id="body-img" alt="Thân nhân vật">
+                            <img src="" id="shirt-img" alt="Áo nhân vật">
+                            <div id="color-overlay"></div>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <!-- CỘT PHẢI -->
+            <div class="right-panel">
+                <div class="controls" id="controls-panel">
+                    <h3>Hãy chọn màu chính xác</h3>
+                    <div><label>Chọn Màu Nhanh:</label><input type="color" id="quick-color" value="#ffffff"></div>
+                    <div><label>Màu sắc (Hue):</label><input type="range" id="hue" min="0" max="360" value="0"></div>
+                    <div><label>Độ rực rỡ (Saturation):</label><input type="range" id="saturation" min="0" max="100" value="0"></div>
+                    <div><label>Độ sáng (Brightness):</label><input type="range" id="brightness" min="0" max="100" value="100"></div>
+                </div>
+
+                <div class="action-buttons">
+                    <button id="check-btn">Chấm Điểm</button>
+                    <button id="next-btn" style="display: none;">Chơi lại</button>
+                </div>
+                <h2 id="result-text"></h2>
+            </div>
         </div>
 
-        <!-- CỘT PHẢI: Bảng điều khiển & Nút bấm & Kết quả -->
-        <div class="right-panel">
-            <div class="controls" id="controls-panel">
-                <h3>Hãy chọn màu chính xác</h3>
-
-                <div>
-                    <label>Chọn Màu Nhanh:</label>
-                    <input type="color" id="quick-color" value="#ffffff">
-                </div>
-
-                <div>
-                    <label>Màu sắc (Hue):</label>
-                    <input type="range" id="hue" min="0" max="360" value="0">
-                </div>
-
-                <div>
-                    <label>Độ rực rỡ (Saturation):</label>
-                    <input type="range" id="saturation" min="0" max="100" value="0">
-                </div>
-
-                <div>
-                    <label>Độ sáng (Brightness):</label>
-                    <input type="range" id="brightness" min="0" max="100" value="100">
-                </div>
+        <!-- MÀN HÌNH KẾT QUẢ -->
+        <div id="result-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" id="close-modal">&times;</span>
+                <h2>Kết Quả Của Bạn!</h2>
+                <h1 id="modal-score">100%</h1>
+                <p id="modal-comment" style="font-size: 18px; color: #555;"></p>
             </div>
-
-            <div class="action-buttons">
-                <button id="check-btn">Chấm Điểm</button>
-                <button id="next-btn" style="display: none;">Chơi lại</button>
-            </div>
-            
-            <h2 id="result-text"></h2>
         </div>
 
+        <div class="footer-signature">made by peihcouq</div>
     </div>
 
-    <!-- MÀN HÌNH POP-UP KẾT QUẢ -->
-    <div id="result-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" id="close-modal">&times;</span>
-            <h2>Kết Quả Của Bạn!</h2>
-            <h1 id="modal-score">100%</h1>
-            <p id="modal-comment" style="font-size: 18px; color: #555;"></p>
-        </div>
-    </div>
-
-    <div class="footer-signature">made by peihcouq</div>
-
-    <!-- BƯỚC ĐỘT PHÁ 3: GẮN MÃ PHIÊN BẢN VÀO FILE JS -->
-    <script src="script.js?v=1.0"></script>
+    <script src="script.js?v=1.1"></script>
 </body>
 </html>
